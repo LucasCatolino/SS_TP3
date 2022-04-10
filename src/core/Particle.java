@@ -10,11 +10,17 @@ public class Particle {
 	private Point2D position; 
 	private double[] velocity= new double[2];
 	
-	public Particle(int id, double mass, double rad, Point2D pos) {
+	public Particle(int id, double mass, double rad, double x, double y, double v_x, double v_y) {
 		this.id= id;
 		this.mass= mass;
 		this.radius = rad;
-		this.position= pos;
+		
+		Point2D position = new Point2D.Float();
+		position.setLocation(x, y);
+		this.position= position;
+		
+		this.velocity[0]= v_x;
+		this.velocity[1]= v_y;
 	}
 
 	public void move(double t) {
@@ -23,6 +29,18 @@ public class Particle {
 	
 	public void collide() {
 		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public double getX() {
+		return position.getX();
+	}
+
+	public double getY() {
+		return position.getY();
 	}
 
 }
