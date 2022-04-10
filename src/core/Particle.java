@@ -34,6 +34,14 @@ public class Particle {
 	public int getId() {
 		return id;
 	}
+	
+	public double getMass() {
+		return mass;
+	}
+	
+	public double getR() {
+		return radius;
+	}
 
 	public double getX() {
 		return position.getX();
@@ -41,6 +49,14 @@ public class Particle {
 
 	public double getY() {
 		return position.getY();
+	}
+	
+	public double getVx() {
+		return velocity[0];
+	}
+	
+	public double getVy() {
+		return velocity[1];
 	}
 
 }

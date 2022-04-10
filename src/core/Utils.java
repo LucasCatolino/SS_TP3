@@ -8,8 +8,7 @@ public class Utils {
 	}
 	
 	public static double calculateSigma(double r1, double r2) {
-		
-		return 0;
+		return r1 + r2;
 	}
 	
 	
