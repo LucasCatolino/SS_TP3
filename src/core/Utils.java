@@ -17,7 +17,7 @@ public class Utils {
 		}
 		
 		double dv_dv= deltaV_deltaV(v1[0], v2[0], v1[1], v2[1]);
-		return - ( dv_dr * Math.sqrt(d) ) / ( dv_dv );
+		return - ( dv_dr + Math.sqrt(d) ) / ( dv_dv );
 	}
 	
 	public static double sigma(double r1, double r2) {
