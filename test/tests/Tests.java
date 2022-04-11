@@ -6,7 +6,9 @@ import java.awt.geom.Point2D;
 
 import org.junit.Test;
 
+import core.Particle;
 import core.Utils;
+import core.Wall;
 
 public class Tests {
 	
@@ -61,6 +63,17 @@ public class Tests {
 		double ttc= Utils.timeToCollision(p1, v1, r1, p2, v2, r2);
 
 		assertEquals(INFINITE, ttc, 0.1);
+	}
+	
+	@Test
+	public void test04WallDevuelvePuntoDeColision() {
+		Wall wallU= new Wall("U", 6);
+		Particle part= new Particle(1, 1, 0, 0, 0, 1, 0);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		
+		fail("Not implemented");
 	}
 
 }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class BrownianMotion {
 	
 	 private ArrayList<Particle> particles;
+	 private ArrayList<Wall> walls;
 	 private final int N;
 	 private final int L;
 	 double[][] timesToCollition;
