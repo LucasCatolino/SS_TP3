@@ -13,7 +13,7 @@ public class BrownianMotion {
 	 private ArrayList<Particle> particles;
 	 private ArrayList<Wall> walls;
 	 private final int N;
-	 private final int L;
+	 private final double L;
 	 double[][] timesToCollition;
 	 
 	 public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
@@ -24,7 +24,7 @@ public class BrownianMotion {
         Scanner staticScanner = new Scanner(staticStream);
         
         this.N= Integer.parseInt(staticScanner.next()); //First line N
-        this.L= Integer.parseInt(staticScanner.next()); //Second line L
+        this.L= Double.parseDouble(staticScanner.next()); //Second line L
 
 	 	//open dynamic file
         InputStream dynamicStream = BrownianMotion.class.getClassLoader().getResourceAsStream(particleDynamicFile);
@@ -46,9 +46,14 @@ public class BrownianMotion {
         	i++;
         }
         
-		staticScanner.close();
+      	staticScanner.close();
 		dynamicScanner.close();
-				
+		
+		walls.add(new Wall("D", L));
+		walls.add(new Wall("R", L));
+		walls.add(new Wall("U", L));
+		walls.add(new Wall("L", L));
+
 		this.timesToCollition= new double[N+4][N]; //+4 for walls
 	 }
 	 

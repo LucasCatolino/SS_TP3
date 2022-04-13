@@ -9,8 +9,8 @@ public class Wall {
 	private static final int INFINITE= Integer.MAX_VALUE;
 
 	public Wall(String c, double l) {
-		this.limit= l;
 		this.id= c.toUpperCase().charAt(0);
+		this.limit= l;
 	}
 
 	public Point2D getCollisionPoint(Particle part) {
