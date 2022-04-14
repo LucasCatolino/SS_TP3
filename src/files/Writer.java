@@ -67,12 +67,12 @@ public class Writer {
 			
 			boolean particleNear= false;
 			
-			if (auxPoint.distance(center) < R_2) {
+			if (auxPoint.distance(center) < (R_2 + R_1)) {
 				particleNear= true;
 			} else {
 				for (Iterator particle = particles.iterator(); particle.hasNext();) {
 					Point2D point2d = (Point2D) particle.next();
-					if (point2d.distance(auxPoint) < R_1) {
+					if (point2d.distance(auxPoint) < (R_1 + R_1)) {
 						particleNear= true;
 						break;
 					}

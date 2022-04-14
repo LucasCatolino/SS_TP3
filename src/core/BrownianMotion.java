@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BrownianMotion {
@@ -13,11 +12,15 @@ public class BrownianMotion {
 	//private ArrayList<Particle> particles;
 	//private ArrayList<Wall> walls;
 	private static final int WALLS= 4;
+	private static final int INFINITE= Integer.MAX_VALUE;
 	private Particle[] particles;
 	private Wall[] walls;
 	private final int N;
 	private final double L;
-	double[][] timesToCollition;
+	private double[][] timesToCollition;
+	private double minTime= INFINITE;
+	private double minX= 0; //position of first particle to collide
+	private double minY= 0; //position of second particle or wall to collide (minY > N means a wall)
  
 	public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
 		//particles= new ArrayList<>();
@@ -28,7 +31,7 @@ public class BrownianMotion {
         
         this.N= Integer.parseInt(staticScanner.next()); //First line N
         this.L= Double.parseDouble(staticScanner.next()); //Second line L
-
+        
         particles= new Particle[N];
         walls= new Wall[WALLS]; 
         
@@ -65,27 +68,22 @@ public class BrownianMotion {
 		walls[2]= new Wall("U", L);
 		walls[3]= new Wall("L", L);
 
-		this.timesToCollition= new double[N+4][N]; //+4 for walls
+		this.timesToCollition= new double[N][N+4]; //+4 for walls
+		initTimes(); //times starts in max value to update with min
 	}
 	
-	public void run() {
-		
+	private void initTimes() {
 		for (int i = 0; i < particles.length; i++) {
-			Particle auxP1= particles[i];
-			for (int j = i+1; j < particles.length; j++) {	 
-				Particle auxP2= particles[j];
-				
-				timesToCollition[i][j]= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), auxP2.getPoint(), auxP2.getV(), auxP2.getR());
-			}
-			
-			double[] zeroVelocity= {0, 0};
-			for (int k = 0; k < walls.length; k++) {
-				Point2D wallCollisionPoint= walls[k].getCollisionPoint(auxP1);
-				timesToCollition[i][particles.length + k + 1]= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), wallCollisionPoint, zeroVelocity, 0);
+			for (int j = 0; j < particles.length + 4; j++) {
+				timesToCollition[i][j]= INFINITE;
 			}
 		}
+	}
+
+	public void run() {
 		
-		
+		//Sets collision times for every pair of particles and with walls and saves min time and pair
+		fillTimes();
 		
 		 /*
 		  * 2) Se calcula el tiempo hasta el primer choque (evento!) (tc). --> armar la matriz y guardar el minimo
@@ -98,6 +96,36 @@ public class BrownianMotion {
 		  * */
 	}
 	
+	private void fillTimes() {
+		double[] zeroVelocity= {0, 0};
+		for (int i = 0; i < particles.length; i++) {
+			Particle auxP1= particles[i];
+			for (int j = i+1; j < particles.length; j++) {	 
+				Particle auxP2= particles[j];
+				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), auxP2.getPoint(), auxP2.getV(), auxP2.getR());
+				
+				timesToCollition[i][j]= auxTime;
+				compareTime(auxTime, i, j);
+			}
+			
+			for (int k = 0; k < walls.length; k++) {
+				Point2D wallCollisionPoint= walls[k].getCollisionPoint(auxP1);
+				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), wallCollisionPoint, zeroVelocity, 0);
+				
+				timesToCollition[i][particles.length + k - 1]= auxTime;
+				compareTime(auxTime, i, particles.length + k - 1);
+			}
+		}
+	}
+
+	private void compareTime(double time, int x, int y) {
+		if (time < minTime) {
+			minTime= time;
+			minX= x;
+			minY= y;
+		}
+	}
+
 	static public void main(String[] args) throws IOException {
 		System.out.println("Static");
 		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
