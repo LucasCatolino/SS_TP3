@@ -24,7 +24,10 @@ public class Particle {
 	}
 
 	public void move(double t) {
-		//TODO: actualiza la posicion
+		//updates position
+		double newX= this.getX() + velocity[0] * t;
+		double newY= this.getY() + velocity[1] * t;
+		position.setLocation(newX, newY);
 	}
 	
 	public void collide() {

@@ -17,7 +17,7 @@ public class BrownianMotion {
 	private Wall[] walls;
 	private final int N;
 	private final double L;
-	private double[][] timesToCollition;
+	private double[][] timesToCollision;
 	private double minTime= INFINITE;
 	private double minX= 0; //position of first particle to collide
 	private double minY= 0; //position of second particle or wall to collide (minY > N means a wall)
@@ -68,22 +68,25 @@ public class BrownianMotion {
 		walls[2]= new Wall("U", L);
 		walls[3]= new Wall("L", L);
 
-		this.timesToCollition= new double[N][N+4]; //+4 for walls
+		this.timesToCollision= new double[N][N+4]; //+4 for walls
 		initTimes(); //times starts in max value to update with min
 	}
 	
 	private void initTimes() {
 		for (int i = 0; i < particles.length; i++) {
 			for (int j = 0; j < particles.length + 4; j++) {
-				timesToCollition[i][j]= INFINITE;
+				timesToCollision[i][j]= INFINITE;
 			}
 		}
 	}
 
 	public void run() {
 		
-		//Sets collision times for every pair of particles and with walls and saves min time and pair
+		//sets collision times for every pair of particles and with walls and saves min time and pair
 		fillTimes();
+		
+		//evolve system to first collision
+		evolve();
 		
 		 /*
 		  * 2) Se calcula el tiempo hasta el primer choque (evento!) (tc). --> armar la matriz y guardar el minimo
@@ -104,7 +107,7 @@ public class BrownianMotion {
 				Particle auxP2= particles[j];
 				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), auxP2.getPoint(), auxP2.getV(), auxP2.getR());
 				
-				timesToCollition[i][j]= auxTime;
+				timesToCollision[i][j]= auxTime;
 				compareTime(auxTime, i, j);
 			}
 			
@@ -112,7 +115,7 @@ public class BrownianMotion {
 				Point2D wallCollisionPoint= walls[k].getCollisionPoint(auxP1);
 				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), wallCollisionPoint, zeroVelocity, 0);
 				
-				timesToCollition[i][particles.length + k - 1]= auxTime;
+				timesToCollision[i][particles.length + k - 1]= auxTime;
 				compareTime(auxTime, i, particles.length + k - 1);
 			}
 		}
@@ -125,6 +128,21 @@ public class BrownianMotion {
 			minY= y;
 		}
 	}
+	
+	private void evolve() {
+		System.out.println(minTime);
+		//update particles position
+		for (int i = 1; i < particles.length; i++) {
+			particles[i].move(minTime);
+		}
+		//update collision times
+		for (int i = 0; i < particles.length; i++) {
+			for (int j = i+1; j < particles.length; j++) {	 
+				timesToCollision[i][j]= timesToCollision[i][j] - minTime; 
+			}
+		}
+	}
+
 
 	static public void main(String[] args) throws IOException {
 		System.out.println("Static");
