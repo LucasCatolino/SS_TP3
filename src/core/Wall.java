@@ -16,13 +16,10 @@ public class Wall {
 	public Point2D getCollisionPoint(Particle part) {
 		Point2D collisionPoint= new Point2D.Float();
 
-		//Left wall and particle going right
-		if ('L' == id) {
-			
-		}
 		double alpha= 0;
 		double x= part.getX();
 		double y= part.getY();
+		double r= part.getR();
 		double auxX= 0;
 		double auxY= 0;
 		double vX= Math.abs(part.getVx());
@@ -38,7 +35,7 @@ public class Wall {
 			//particle going down
 			alpha= Math.atan2(vX, vY);
 			auxY= 0;
-			auxX= (part.getVx() > 0) ? y * Math.tan(alpha) + x : x - y * Math.tan(alpha);
+			auxX= (part.getVx() > 0) ? (y - r) * Math.tan(alpha) + x : x - (y - r) * Math.tan(alpha);
 			break;
 			
 		case 'R':
@@ -50,7 +47,7 @@ public class Wall {
 			//particle going right
 			alpha= Math.atan2(vY, vX);
 			auxX= limit;
-			auxY= (part.getVy() > 0) ? (limit - x) * Math.tan(alpha) + y : y - (limit - x) * Math.tan(alpha);
+			auxY= (part.getVy() > 0) ? (limit - x - r) * Math.tan(alpha) + y : y - (limit - x - r) * Math.tan(alpha);
 			break;
 			
 		case 'U':
@@ -62,7 +59,7 @@ public class Wall {
 			//particle going down
 			alpha= Math.atan2(vX, vY);
 			auxY= limit;
-			auxX= (part.getVx() > 0) ? (limit - y) * Math.tan(alpha) + x : x - (limit - y) * Math.tan(alpha);
+			auxX= (part.getVx() > 0) ? (limit - y - r) * Math.tan(alpha) + x : x - (limit - y - r) * Math.tan(alpha);
 			break;
 			
 		case 'L':
@@ -74,7 +71,7 @@ public class Wall {
 			//particle going left
 			alpha= Math.atan2(vY, vX);
 			auxX= 0;
-			auxY= (part.getVy() > 0) ? x * Math.tan(alpha) + y : y - x * Math.tan(alpha);
+			auxY= (part.getVy() > 0) ? (x - r) * Math.tan(alpha) + y : y - (x - r) * Math.tan(alpha);
 			break;
 
 		default:

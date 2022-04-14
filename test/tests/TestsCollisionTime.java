@@ -6,11 +6,9 @@ import java.awt.geom.Point2D;
 
 import org.junit.Test;
 
-import core.Particle;
 import core.Utils;
-import core.Wall;
 
-public class TestsParticles {
+public class TestsCollisionTime {
 	
 	private static final int INFINITE= Integer.MAX_VALUE;
 

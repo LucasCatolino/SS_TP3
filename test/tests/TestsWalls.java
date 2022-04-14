@@ -109,4 +109,92 @@ public class TestsWalls {
 		assertEquals(4, point.getX(), 0.1);
 		assertEquals(0, point.getY(), 0.1);
 	}
+	
+	@Test
+	public void test10WallRDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("R", 6);
+		Particle part= new Particle(1, 1, 1, 2, 2, 4, -1);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(6, point.getX(), 0.1);
+		assertEquals(1.2, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test11WallRDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("R", 6);
+		Particle part= new Particle(1, 1, 1, 2, 2, 2, 1);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(6, point.getX(), 0.1);
+		assertEquals(3.5, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test12WallUDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("U", 6);
+		Particle part= new Particle(1, 1, 1, 2, 2, 1, 4);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(2.75, point.getX(), 0.1);
+		assertEquals(6, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test13WallUDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("U", 6);
+		Particle part= new Particle(1, 1, 1, 2, 2, -1, 4);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(1.25, point.getX(), 0.1);
+		assertEquals(6, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test14WallUDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("D", 6);
+		Particle part= new Particle(1, 1, 1, 3, 4, 1, -4);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(3.75, point.getX(), 0.1);
+		assertEquals(0, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test15WallUDevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("D", 6);
+		Particle part= new Particle(1, 1, 1, 3, 4, -2, -4);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(1.5, point.getX(), 0.1);
+		assertEquals(0, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test16WallULevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("L", 6);
+		Particle part= new Particle(1, 1, 1, 4, 3, -4, 2);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(0, point.getX(), 0.1);
+		assertEquals(4.5, point.getY(), 0.1);
+	}
+	
+	@Test
+	public void test17WallULevuelvePuntoDeColisionConRadio() {
+		Wall wallU= new Wall("L", 6);
+		Particle part= new Particle(1, 1, 1, 4, 3, -4, -2);
+		
+		Point2D point= wallU.getCollisionPoint(part);
+		
+		assertEquals(0, point.getX(), 0.1);
+		assertEquals(1.5, point.getY(), 0.1);
+	}
 }

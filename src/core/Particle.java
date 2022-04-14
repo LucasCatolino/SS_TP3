@@ -42,6 +42,10 @@ public class Particle {
 	public double getR() {
 		return radius;
 	}
+	
+	public Point2D getPoint() {
+		return position;
+	}
 
 	public double getX() {
 		return position.getX();
@@ -49,6 +53,10 @@ public class Particle {
 
 	public double getY() {
 		return position.getY();
+	}
+	
+	public double[] getV() {
+		return velocity;
 	}
 	
 	public double getVx() {
