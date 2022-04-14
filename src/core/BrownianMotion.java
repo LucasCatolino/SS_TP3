@@ -19,8 +19,8 @@ public class BrownianMotion {
 	private final double L;
 	private double[][] timesToCollision;
 	private double minTime= INFINITE;
-	private double minX= 0; //position of first particle to collide
-	private double minY= 0; //position of second particle or wall to collide (minY > N means a wall)
+	private int minX= 0; //position of first particle to collide
+	private int minY= 0; //position of second particle or wall to collide (minY > N means a wall)
  
 	public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
 		//particles= new ArrayList<>();
@@ -88,6 +88,9 @@ public class BrownianMotion {
 		//evolve system to first collision
 		evolve();
 		
+		//update collision particles
+		collision();
+		
 		 /*
 		  * 2) Se calcula el tiempo hasta el primer choque (evento!) (tc). --> armar la matriz y guardar el minimo
 			3) Se evolucionan todas las partículas según sus ecuaciones de
@@ -98,7 +101,7 @@ public class BrownianMotion {
 			6) volver a 2).
 		  * */
 	}
-	
+
 	private void fillTimes() {
 		double[] zeroVelocity= {0, 0};
 		for (int i = 0; i < particles.length; i++) {
@@ -115,8 +118,8 @@ public class BrownianMotion {
 				Point2D wallCollisionPoint= walls[k].getCollisionPoint(auxP1);
 				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), wallCollisionPoint, zeroVelocity, 0);
 				
-				timesToCollision[i][particles.length + k - 1]= auxTime;
-				compareTime(auxTime, i, particles.length + k - 1);
+				timesToCollision[i][particles.length + k]= auxTime;
+				compareTime(auxTime, i, particles.length + k);
 			}
 		}
 	}
@@ -130,7 +133,6 @@ public class BrownianMotion {
 	}
 	
 	private void evolve() {
-		System.out.println(minTime);
 		//update particles position
 		for (int i = 1; i < particles.length; i++) {
 			particles[i].move(minTime);
@@ -142,7 +144,43 @@ public class BrownianMotion {
 			}
 		}
 	}
+	
+	private void collision() {
+		if (minY >= N) {
+			wallCollision();
+		} else {
+			particlesCollision(particles[minX], particles[minY]);
+		}
+	}
 
+	private void wallCollision() {
+		int wallPosition= minY % N;
+		switch (wallPosition) {
+		//down wall
+		case 0:
+			particles[minX].swapVy();
+			break;
+		
+		//right wall
+		case 1:
+			particles[minX].swapVx();
+			break;
+		
+		//up wall
+		case 2:
+			particles[minX].swapVy();
+			break;
+		
+		//left wall
+		case 3:
+			particles[minX].swapVx();
+			break;
+		}		
+	}
+		
+	private void particlesCollision(Particle p1, Particle p2) {
+		
+	}
 
 	static public void main(String[] args) throws IOException {
 		System.out.println("Static");

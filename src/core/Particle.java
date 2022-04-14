@@ -70,4 +70,13 @@ public class Particle {
 		return velocity[1];
 	}
 
+	public void swapVx() {
+		this.velocity[0]= (-1) * this.velocity[1];
+	}
+
+	public void swapVy() {
+		this.velocity[1]= (-1) * this.velocity[1];
+	}
+
+
 }
