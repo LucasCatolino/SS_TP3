@@ -15,7 +15,7 @@ public class BrownianMotion {
 	//private ArrayList<Wall> walls;
 	private static final int WALLS= 4;
 	private static final int INFINITE= Integer.MAX_VALUE;
-	private static final int MAX= 10;
+	private static final int MAX= 1000;
 	private Particle[] particles;
 	private Wall[] walls;
 	private final int N;
@@ -84,7 +84,7 @@ public class BrownianMotion {
 	}
 
 	public void run() {
-		for (int i = 1; i < MAX; i++) {
+		for (int i = 1; i <= MAX; i++) {
 			//sets collision times for every pair of particles and with walls for first time
 			fillTimes();
 
@@ -226,7 +226,7 @@ public class BrownianMotion {
 		String dynamicInput = readerDynamic.readLine();
 		
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
-		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
+		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic0.txt" : dynamicInput;
 		
 		System.out.println("Starting with " + staticFile + " and " + dynamicFile);
 		
