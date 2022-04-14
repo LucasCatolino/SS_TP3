@@ -2,6 +2,8 @@ package core;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,6 +15,7 @@ public class BrownianMotion {
 	//private ArrayList<Wall> walls;
 	private static final int WALLS= 4;
 	private static final int INFINITE= Integer.MAX_VALUE;
+	private static final int MAX= 10;
 	private Particle[] particles;
 	private Wall[] walls;
 	private final int N;
@@ -81,26 +84,24 @@ public class BrownianMotion {
 	}
 
 	public void run() {
-		
-		//sets collision times for every pair of particles and with walls and saves min time and pair
-		fillTimes();
-		
-		//evolve system to first collision
-		evolve();
-		
-		//update collision particles
-		collision();
-		
-		 /*
-		  * 2) Se calcula el tiempo hasta el primer choque (evento!) (tc). --> armar la matriz y guardar el minimo
-			3) Se evolucionan todas las partículas según sus ecuaciones de
-			movimiento hasta tc .
-			4) Se guarda el estado del sistema (posiciones y velocidades) en t = tc
-			5) Con el “operador de colisión” se determinan las nuevas velocidades
-			después del choque, solo para las partículas que chocaron.
-			6) volver a 2).
-		  * */
+		for (int i = 1; i < MAX; i++) {
+			//sets collision times for every pair of particles and with walls for first time
+			fillTimes();
+
+			//time to first collision
+			updateMin();
+			
+			//evolve system to first collision
+			evolve();
+			
+			//update collision particles
+			collision();
+			
+			//write output file
+			writeOutput(i);
+		}
 	}
+
 
 	private void fillTimes() {
 		double[] zeroVelocity= {0, 0};
@@ -111,7 +112,6 @@ public class BrownianMotion {
 				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), auxP2.getPoint(), auxP2.getV(), auxP2.getR());
 				
 				timesToCollision[i][j]= auxTime;
-				compareTime(auxTime, i, j);
 			}
 			
 			for (int k = 0; k < walls.length; k++) {
@@ -119,7 +119,18 @@ public class BrownianMotion {
 				double auxTime= Utils.timeToCollision(auxP1.getPoint(), auxP1.getV(), auxP1.getR(), wallCollisionPoint, zeroVelocity, 0);
 				
 				timesToCollision[i][particles.length + k]= auxTime;
-				compareTime(auxTime, i, particles.length + k);
+			}
+		}
+	}
+
+	private void updateMin() {
+		for (int i = 0; i < particles.length; i++) {
+			for (int j = i+1; j < particles.length; j++) {	 
+				compareTime(timesToCollision[i][j], i, j);
+			}
+			
+			for (int k = 0; k < walls.length; k++) {
+				compareTime(timesToCollision[i][particles.length + k], i, particles.length + k);
 			}
 		}
 	}
@@ -183,6 +194,26 @@ public class BrownianMotion {
 		double jy= Utils.jacobian(p1.getPoint(), p1.getV(), p1.getMass(), p1.getR(), p2.getPoint(), p2.getV(), p2.getMass(), p2.getR(), "Y");
 		p1.updateV(jx, jy);
 		p2.updateV(jx, jy);
+	}
+
+	private void writeOutput(int time) {
+		try {
+            File file = new File("./resources/dynamic" + time + ".txt");
+            FileWriter myWriter = new FileWriter("./resources/dynamic" + time + ".txt");
+            for (int i = 0; i < particles.length; i++) {				
+            	try {
+            		Particle particle= particles[i];
+            		myWriter.write("" + particle.getX() + "\t" + particle.getY() + "\t" + particle.getVx() + "\t" + particle.getVy() + "\n");
+            	} catch (Exception e) {
+            		System.err.println("IOException");
+            	}
+			}
+            myWriter.close();
+            System.out.println("Successfully wrote to the file ./resources/dynamic" + time + ".txt");
+        } catch (IOException e) {
+            System.out.println("IOException ocurred");
+            e.printStackTrace();
+        }
 	}
 
 	static public void main(String[] args) throws IOException {

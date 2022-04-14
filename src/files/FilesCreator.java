@@ -32,7 +32,7 @@ public class FilesCreator {
     	System.out.println("L: " + L + " N: " + N);
     	
     	Writer writerStatic = new Writer(L, N, "static");
-		Writer writerDynamic = new Writer(L, N, "dynamic");
+		Writer writerDynamic = new Writer(L, N, "dynamic0");
 
     }
 
