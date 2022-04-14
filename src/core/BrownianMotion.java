@@ -179,7 +179,10 @@ public class BrownianMotion {
 	}
 		
 	private void particlesCollision(Particle p1, Particle p2) {
-		
+		double jx= Utils.jacobian(p1.getPoint(), p1.getV(), p1.getMass(), p1.getR(), p2.getPoint(), p2.getV(), p2.getMass(), p2.getR(), "X");
+		double jy= Utils.jacobian(p1.getPoint(), p1.getV(), p1.getMass(), p1.getR(), p2.getPoint(), p2.getV(), p2.getMass(), p2.getR(), "Y");
+		p1.updateV(jx, jy);
+		p2.updateV(jx, jy);
 	}
 
 	static public void main(String[] args) throws IOException {

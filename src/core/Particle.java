@@ -78,5 +78,10 @@ public class Particle {
 		this.velocity[1]= (-1) * this.velocity[1];
 	}
 
+	public void updateV(double jx, double jy) {
+		this.velocity[0]= this.velocity[0] + (jx / mass);
+		this.velocity[1]= this.velocity[1] + (jy / mass);
+	}
+
 
 }
