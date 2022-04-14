@@ -46,5 +46,16 @@ public class Utils {
 		
 		return Math.pow(dv_dr, 2) - ( dv_dv * ( dr_dr - sigma2 ) );
 	}
+	
+	public static double jacobian(Point2D p1, double[] v1, double m1, double r1, Point2D p2, double[] v2, double m2, double r2, String dim) {
+		double deltaPos= (dim.charAt(0) == 'X') ? p2.getX() - p1.getX() : p2.getY() - p1.getY(); 
+		
+		double dv_dr= deltaV_deltaR(p1.getX(), p2.getX(), v1[0], v2[0], p1.getY(), p2.getY(), v1[1], v2[1]);
+		double sigma= sigma(r1, r2);
+		
+		double j= (2 * m1 * m2 * dv_dr) / (sigma * (m1 + m2));
+		
+		return (j * deltaPos) / sigma(r1, r2);
+	}
 
 }
