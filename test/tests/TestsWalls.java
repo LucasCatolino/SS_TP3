@@ -7,66 +7,12 @@ import java.awt.geom.Point2D;
 import org.junit.Test;
 
 import core.Particle;
-import core.Utils;
 import core.Wall;
 
-public class Tests {
-	
-	private static final int INFINITE= Integer.MAX_VALUE;
-
-	@Test
-	public void test01ParticlesCollide() {
-		Point2D p1= new Point2D.Float();
-		p1.setLocation(0, 0);
-		double[] v1= {0, 0};
-		double r1= 0;
-		
-		Point2D p2= new Point2D.Float();
-		p2.setLocation(100, 0);
-		double[] v2= {-10, 0};
-		double r2= 0;
-		
-		double ttc= Utils.timeToCollision(p1, v1, r1, p2, v2, r2);
-
-		assertEquals(10, ttc, 0.1);
-	}
+public class TestsWalls {
 	
 	@Test
-	public void test02ParticlesDoNotCollide() {
-		Point2D p1= new Point2D.Float();
-		p1.setLocation(0, 0);
-		double[] v1= {0, 0};
-		double r1= 0;
-		
-		Point2D p2= new Point2D.Float();
-		p2.setLocation(100, 0);
-		double[] v2= {10, 0};
-		double r2= 0;
-		
-		double ttc= Utils.timeToCollision(p1, v1, r1, p2, v2, r2);
-
-		assertEquals(INFINITE, ttc, 0.1);
-	}
-	
-	@Test
-	public void test03ParticlesDoNotCollide() {
-		Point2D p1= new Point2D.Float();
-		p1.setLocation(0, 0);
-		double[] v1= {-10, 0};
-		double r1= 0;
-		
-		Point2D p2= new Point2D.Float();
-		p2.setLocation(100, 0);
-		double[] v2= {10, 0};
-		double r2= 0;
-		
-		double ttc= Utils.timeToCollision(p1, v1, r1, p2, v2, r2);
-
-		assertEquals(INFINITE, ttc, 0.1);
-	}
-	
-	@Test
-	public void test04WallRDevuelvePuntoDeColision() {
+	public void test01WallRDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("R", 6);
 		Particle part= new Particle(1, 1, 0, 1, 1, 1, 0);
 		
@@ -77,7 +23,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test05WallRDevuelvePuntoDeColision() {
+	public void test02WallRDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("R", 6);
 		Particle part= new Particle(1, 1, 0, 1, 1, 5, 1);
 		
@@ -88,7 +34,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test06WallRDevuelvePuntoDeColision() {
+	public void test03WallRDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("R", 6);
 		Particle part= new Particle(1, 1, 0, 1, 1, 5, -1);
 		
@@ -99,7 +45,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test06WallLDevuelvePuntoDeColision() {
+	public void test04WallLDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("L", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, -3, -1);
 		
@@ -110,7 +56,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test07WallLDevuelvePuntoDeColision() {
+	public void test05WallLDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("L", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, -3, 1);
 		
@@ -121,7 +67,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test08WallUDevuelvePuntoDeColision() {
+	public void test06WallUDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("U", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, 1, 4);
 		
@@ -132,7 +78,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test09WallUDevuelvePuntoDeColision() {
+	public void test07WallUDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("U", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, -1, 4);
 		
@@ -143,7 +89,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void test10WallDDevuelvePuntoDeColision() {
+	public void test08WallDDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("D", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, -1, -2);
 		
@@ -154,7 +100,7 @@ public class Tests {
 	}
 
 	@Test
-	public void test11WallDDevuelvePuntoDeColision() {
+	public void test09WallDDevuelvePuntoDeColision() {
 		Wall wallU= new Wall("D", 6);
 		Particle part= new Particle(1, 1, 0, 3, 2, 1, -2);
 		
