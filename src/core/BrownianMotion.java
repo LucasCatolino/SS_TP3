@@ -18,12 +18,13 @@ public class BrownianMotion {
 	private Wall[] walls;
 	private final int N;
 	private final double L;
+	private final int steps;
 	private double[][] timesToCollision;
 	private double minTime= INFINITE;
 	private int minX= 0; //position of first particle to collide
 	private int minY= 0; //position of second particle or wall to collide (minY > N means a wall)
  
-	public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
+	public BrownianMotion(String particleStaticFile, String particleDynamicFile, int steps) {
 		//open static file
         InputStream staticStream = BrownianMotion.class.getClassLoader().getResourceAsStream(particleStaticFile);
         assert staticStream != null;
@@ -65,6 +66,7 @@ public class BrownianMotion {
 
 		this.timesToCollision= new double[N][N+4]; //+4 for walls
 		initTimes(); //times starts in max value to update with min
+		this.steps= steps;
 	}
 	
 	private void initTimes() {
@@ -77,19 +79,20 @@ public class BrownianMotion {
 
 	public void run() {
 		for (int i = 1; i <= MAX; i++) {
-			//sets collision times for every pair of particles and with walls for first time
-			fillTimes();
-
-			//time to first collision
-			updateMin();
-			
-			//evolve system to first collision
-			evolve();
-			
-			//update collision particles
-			collision();
-			
-			//write output file
+			for (int j = 0; j < steps; j++) {				
+				//sets collision times for every pair of particles and with walls for first time
+				fillTimes();
+				
+				//time to first collision
+				updateMin();
+				
+				//evolve system to first collision
+				evolve();
+				
+				//update collision particles
+				collision();
+			}
+			//write output file after steps
 			writeOutput(i);
 		}
 	}
@@ -218,12 +221,17 @@ public class BrownianMotion {
 		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
 		String dynamicInput = readerDynamic.readLine();
 		
+		System.out.println("Steps (default 10)");
+		BufferedReader readerSteps= new BufferedReader(new InputStreamReader(System.in));
+		int stepsInput = Integer.parseInt(readerSteps.readLine());
+		
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
 		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic0.txt" : dynamicInput;
+		int steps= (dynamicInput.length() > 0) ? 10 : stepsInput;
 		
-		System.out.println("Starting with " + staticFile + " and " + dynamicFile);
+		System.out.println("Starting with " + staticFile + ", " + dynamicFile + " and step " + steps);
 		
-		BrownianMotion brownian= new BrownianMotion(staticFile, dynamicFile);
+		BrownianMotion brownian= new BrownianMotion(staticFile, dynamicFile, steps);
 		brownian.run();
 
 	}
