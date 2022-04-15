@@ -11,8 +11,6 @@ import java.util.Scanner;
 
 public class BrownianMotion {
 	
-	//private ArrayList<Particle> particles;
-	//private ArrayList<Wall> walls;
 	private static final int WALLS= 4;
 	private static final int INFINITE= Integer.MAX_VALUE;
 	private static final int MAX= 1000;
@@ -26,7 +24,6 @@ public class BrownianMotion {
 	private int minY= 0; //position of second particle or wall to collide (minY > N means a wall)
  
 	public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
-		//particles= new ArrayList<>();
 		//open static file
         InputStream staticStream = BrownianMotion.class.getClassLoader().getResourceAsStream(particleStaticFile);
         assert staticStream != null;
@@ -53,7 +50,6 @@ public class BrownianMotion {
         	double v_x= Float.parseFloat(dynamicScanner.next());
         	double v_y= Float.parseFloat(dynamicScanner.next());
         	
-        	//particles.add(new Particle(i, mass, rad, x, y, v_x, v_y));
         	particles[i]= new Particle(i, mass, rad, x, y, v_x, v_y);
         	
         	i++;
@@ -62,10 +58,6 @@ public class BrownianMotion {
       	staticScanner.close();
 		dynamicScanner.close();
 		
-		//walls.add(new Wall("D", L));
-		//walls.add(new Wall("R", L));
-		//walls.add(new Wall("U", L));
-		//walls.add(new Wall("L", L));
 		walls[0]= new Wall("D", L);
 		walls[1]= new Wall("R", L);
 		walls[2]= new Wall("U", L);
@@ -121,6 +113,7 @@ public class BrownianMotion {
 				timesToCollision[i][particles.length + k]= auxTime;
 			}
 		}
+		minTime= INFINITE;
 	}
 
 	private void updateMin() {
@@ -136,7 +129,7 @@ public class BrownianMotion {
 	}
 
 	private void compareTime(double time, int x, int y) {
-		if (time < minTime) {
+		if (time > 0 && time < minTime) {
 			minTime= time;
 			minX= x;
 			minY= y;
@@ -145,7 +138,7 @@ public class BrownianMotion {
 	
 	private void evolve() {
 		//update particles position
-		for (int i = 1; i < particles.length; i++) {
+		for (int i = 0; i < particles.length; i++) {
 			particles[i].move(minTime);
 		}
 		//update collision times
@@ -165,7 +158,7 @@ public class BrownianMotion {
 	}
 
 	private void wallCollision() {
-		int wallPosition= minY % N;
+		int wallPosition= minY - N;
 		switch (wallPosition) {
 		//down wall
 		case 0:
@@ -192,8 +185,8 @@ public class BrownianMotion {
 	private void particlesCollision(Particle p1, Particle p2) {
 		double jx= Utils.jacobian(p1.getPoint(), p1.getV(), p1.getMass(), p1.getR(), p2.getPoint(), p2.getV(), p2.getMass(), p2.getR(), "X");
 		double jy= Utils.jacobian(p1.getPoint(), p1.getV(), p1.getMass(), p1.getR(), p2.getPoint(), p2.getV(), p2.getMass(), p2.getR(), "Y");
-		p1.updateV(jx, jy);
-		p2.updateV(jx, jy);
+		p1.updateV(jx, jy, 1);
+		p2.updateV(jx, jy, -1);
 	}
 
 	private void writeOutput(int time) {

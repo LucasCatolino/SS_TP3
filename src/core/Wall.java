@@ -74,10 +74,6 @@ public class Wall {
 			auxY= (part.getVy() > 0) ? (x - r) * Math.tan(alpha) + y : y - (x - r) * Math.tan(alpha);
 			break;
 
-		default:
-			auxX= INFINITE;
-			auxY= INFINITE;
-			break;
 		}
 		//check if particle reaches other wall before
 		auxX= (0 <= auxX && auxX <= limit) ? auxX : INFINITE;
