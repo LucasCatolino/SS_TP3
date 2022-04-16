@@ -182,7 +182,7 @@ public class BrownianMotion {
 		case 3:
 			particles[minX].swapVx();
 			break;
-		}		
+		}
 	}
 		
 	private void particlesCollision(Particle p1, Particle p2) {
@@ -227,7 +227,7 @@ public class BrownianMotion {
 		
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
 		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic0.txt" : dynamicInput;
-		int steps= (dynamicInput.length() > 0) ? 10 : stepsInput;
+		int steps= (stepsInput > 0) ? stepsInput : 10;
 		
 		System.out.println("Starting with " + staticFile + ", " + dynamicFile + " and step " + steps);
 		

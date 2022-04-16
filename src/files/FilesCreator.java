@@ -28,6 +28,8 @@ public class FilesCreator {
     		N= Integer.valueOf(auxN);
     		correctN= (N > 0) ? true : false;
     	}
+    	
+		//int steps= (dynamicInput.length() > 0) ? 10 : stepsInput;
 
     	System.out.println("L: " + L + " N: " + N);
     	
