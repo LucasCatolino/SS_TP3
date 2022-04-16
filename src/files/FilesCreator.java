@@ -29,12 +29,15 @@ public class FilesCreator {
     		correctN= (N > 0) ? true : false;
     	}
     	
-		//int steps= (dynamicInput.length() > 0) ? 10 : stepsInput;
+		System.out.println("Velocity (default 2)");
+		BufferedReader readerV= new BufferedReader(new InputStreamReader(System.in));
+		double vInput = Double.parseDouble(readerV.readLine());
+		double v= (vInput > 0) ? vInput : 2;
 
-    	System.out.println("L: " + L + " N: " + N);
+    	System.out.println("L: " + L + " N: " + N + " v: " + v);
     	
-    	Writer writerStatic = new Writer(L, N, "static");
-		Writer writerDynamic = new Writer(L, N, "dynamic0");
+    	Writer writerStatic = new Writer(L, N, "static", v);
+		Writer writerDynamic = new Writer(L, N, "dynamic0", v);
 
     }
 

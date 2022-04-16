@@ -13,10 +13,11 @@ public class Writer {
 	private static final double M_1= 0.9;
 	private static final double R_2= 0.7;
 	private static final double M_2= 2;
-	private static final int V= 2;
+	private static double velocity;
 	private static final int DEGREES= 360;
 		
-    public Writer(int L, int N, String type) {
+    public Writer(int L, int N, String type, double v) {
+    	this.velocity= v;
     	
 		try {
             File file = new File("./resources/" + type + ".txt");
@@ -82,7 +83,7 @@ public class Writer {
 			if (!particleNear) {
 				particles.add(auxPoint);
 				
-				double v= Math.random() * V; //module of v is 2
+				double v= Math.random() * velocity; //module of v is 2
 				double d= Math.random() * DEGREES;
 				myWriter.write("" + x + "\t" + y + "\t" + v * Math.sin(Math.toRadians(d)) + "\t"
 						+  v * Math.cos(Math.toRadians(d)) + "\n"); //x y v_x v_y not overlapped and with |v|<2

@@ -223,7 +223,12 @@ public class BrownianMotion {
 		
 		System.out.println("Steps (default 10)");
 		BufferedReader readerSteps= new BufferedReader(new InputStreamReader(System.in));
-		int stepsInput = Integer.parseInt(readerSteps.readLine());
+		int stepsInput= 0;
+		try {
+			stepsInput = Integer.parseInt(readerSteps.readLine());			
+		} catch (NumberFormatException e) {
+			stepsInput= 0;
+		}
 		
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
 		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic0.txt" : dynamicInput;
