@@ -13,7 +13,7 @@ public class BrownianMotion {
 	
 	private static final int WALLS= 4;
 	private static final int INFINITE= Integer.MAX_VALUE;
-	private static final int MAX= 100;
+	private static final int MAX= 100000;
 	private Particle[] particles;
 	private Wall[] walls;
 	private final int N;
@@ -40,6 +40,9 @@ public class BrownianMotion {
         InputStream dynamicStream = BrownianMotion.class.getClassLoader().getResourceAsStream(particleDynamicFile);
         assert dynamicStream != null;
         Scanner dynamicScanner = new Scanner(dynamicStream);
+        
+        //discard first line
+        dynamicScanner.next(); //first line is time
         
         int i= 0;
         //read rest of files and add particles to map
@@ -130,9 +133,9 @@ public class BrownianMotion {
 		}
 	}
 
-	private void compareTime(double time, int x, int y) {
-		if (time > 0 && time < minTime) {
-			minTime= time;
+	private void compareTime(double compareTime, int x, int y) {
+		if (compareTime > 0 && compareTime < minTime) {
+			minTime= compareTime;
 			minX= x;
 			minY= y;
 		}
@@ -220,10 +223,7 @@ public class BrownianMotion {
 		System.out.println("Dynamic");
 		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
 		String dynamicInput = readerDynamic.readLine();
-		
-		System.out.println("Steps (default 10)");
-		BufferedReader readerSteps= new BufferedReader(new InputStreamReader(System.in));
-		
+				
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
 		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
 		

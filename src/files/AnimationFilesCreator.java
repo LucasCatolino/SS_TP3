@@ -35,16 +35,15 @@ public class AnimationFilesCreator {
         File file = new File("./resources/dynamic.xyz");
         FileWriter myWriter = new FileWriter("./resources/dynamic.xyz");
 		
-		for (int i = 0; i <= MAX; i++) {
-			InputStream dynamicStream = AnimationFilesCreator.class.getClassLoader().getResourceAsStream("dynamic" + i + ".txt");
-			System.out.println("dynamic" + i + ".txt");
-			assert dynamicStream != null;
-			Scanner dynamicScanner = new Scanner(dynamicStream);
-			
+		InputStream dynamicStream = AnimationFilesCreator.class.getClassLoader().getResourceAsStream("dynamic.txt");
+		assert dynamicStream != null;
+		Scanner dynamicScanner = new Scanner(dynamicStream);
+        int i= 0;
+        while (dynamicScanner.hasNext() && i < MAX) {
 			try {
-	            
+
 	            myWriter.write("" + (N+4 + "\n"));
-	            myWriter.write("t=" + i + "\n");
+	            myWriter.write("t=" + Double.parseDouble(dynamicScanner.next()) + "\n");
 	            
 	            int red= 1;
 	            int blue= 0;
@@ -65,9 +64,9 @@ public class AnimationFilesCreator {
 	            System.out.println("IOException ocurred");
 	            e.printStackTrace();
 	        }
-			
-			dynamicScanner.close();
+			i++;
 		}
+        dynamicScanner.close();
 		
 	}
 	
