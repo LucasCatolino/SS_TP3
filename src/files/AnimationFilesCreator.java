@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class AnimationFilesCreator {
 	
-	private static final int MAX= 1000;
+	private static final int MAX= 100000;
 	private double[] radius;
 
 	public AnimationFilesCreator() throws IOException {
@@ -39,7 +39,8 @@ public class AnimationFilesCreator {
 		assert dynamicStream != null;
 		Scanner dynamicScanner = new Scanner(dynamicStream);
         int i= 0;
-        while (dynamicScanner.hasNext() && i < MAX) {
+        boolean reachBorder= false;
+        while (dynamicScanner.hasNext() && i < MAX && !reachBorder) {
 			try {
 
 	            myWriter.write("" + (N+4 + "\n"));
@@ -48,12 +49,19 @@ public class AnimationFilesCreator {
 	            int red= 1;
 	            int blue= 0;
 	            
-	            for (int j = 0; j < N; j++) {
+	            double redX= Double.parseDouble(dynamicScanner.next());
+	            double redY= Double.parseDouble(dynamicScanner.next());
+        		dynamicScanner.next(); //skip vx
+        		dynamicScanner.next(); //skip vy
+        		myWriter.write("" + redX + "\t" + redY + "\t" + radius[0] + "\t" + red + "\t" + blue + "\n");
+        		reachBorder= evaluateBorder(redX, redY, radius[0], L);
+        		
+        		red= 0;
+        		blue= 1;	            
+	            for (int j = 1; j < N; j++) {
             		myWriter.write("" + Double.parseDouble(dynamicScanner.next()) + "\t" + Double.parseDouble(dynamicScanner.next()) + "\t" + radius[j] + "\t" + red + "\t" + blue + "\n");
             		dynamicScanner.next(); //skip vx
             		dynamicScanner.next(); //skip vy
-            		red= 0;
-            		blue= 1;
 				}
 	            
 	            myWriter.write("0\t0\t0\t0\t0\n");
@@ -64,12 +72,20 @@ public class AnimationFilesCreator {
 	            System.out.println("IOException ocurred");
 	            e.printStackTrace();
 	        }
+			
 			i++;
 		}
         dynamicScanner.close();
 		
 	}
 	
+	private boolean evaluateBorder(double x, double y, double r, double l) {
+		if ((x-r < 0.01) || (x+r > l-0.01) || (y-r < 00.1) || (y+r > l-0.01)) {
+			return true;
+		}
+		return false;
+	}
+
 	static public void main(String[] args) throws IOException {
 		System.out.println("Creating animation");
 		AnimationFilesCreator animator= new AnimationFilesCreator();
