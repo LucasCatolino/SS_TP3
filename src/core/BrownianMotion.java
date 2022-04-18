@@ -13,18 +13,18 @@ public class BrownianMotion {
 	
 	private static final int WALLS= 4;
 	private static final int INFINITE= Integer.MAX_VALUE;
-	private static final int MAX= 1000;
+	private static final int MAX= 100;
 	private Particle[] particles;
 	private Wall[] walls;
 	private final int N;
 	private final double L;
-	private final int steps;
 	private double[][] timesToCollision;
 	private double minTime= INFINITE;
 	private int minX= 0; //position of first particle to collide
 	private int minY= 0; //position of second particle or wall to collide (minY > N means a wall)
+	private double time= 0; //time starts in 0
  
-	public BrownianMotion(String particleStaticFile, String particleDynamicFile, int steps) {
+	public BrownianMotion(String particleStaticFile, String particleDynamicFile) {
 		//open static file
         InputStream staticStream = BrownianMotion.class.getClassLoader().getResourceAsStream(particleStaticFile);
         assert staticStream != null;
@@ -66,7 +66,6 @@ public class BrownianMotion {
 
 		this.timesToCollision= new double[N][N+4]; //+4 for walls
 		initTimes(); //times starts in max value to update with min
-		this.steps= steps;
 	}
 	
 	private void initTimes() {
@@ -79,22 +78,22 @@ public class BrownianMotion {
 
 	public void run() {
 		for (int i = 1; i <= MAX; i++) {
-			for (int j = 0; j < steps; j++) {				
-				//sets collision times for every pair of particles and with walls for first time
-				fillTimes();
-				
-				//time to first collision
-				updateMin();
-				
-				//evolve system to first collision
-				evolve();
-				
-				//update collision particles
-				collision();
-			}
+			//sets collision times for every pair of particles and with walls for first time
+			fillTimes();
+			
+			//time to first collision
+			updateMin();
+			
+			//evolve system to first collision
+			evolve();
+			
+			//update collision particles
+			collision();
+
 			//write output file after steps
-			writeOutput(i);
+			writeOutput();
 		}
+        System.out.println("Successfully wrote to the file ./resources/dynamic.txt");
 	}
 
 
@@ -150,6 +149,7 @@ public class BrownianMotion {
 				timesToCollision[i][j]= timesToCollision[i][j] - minTime; 
 			}
 		}
+		time= time + minTime;
 	}
 	
 	private void collision() {
@@ -192,10 +192,11 @@ public class BrownianMotion {
 		p2.updateV(jx, jy, -1);
 	}
 
-	private void writeOutput(int time) {
+	private void writeOutput() {
 		try {
-            File file = new File("./resources/dynamic" + time + ".txt");
-            FileWriter myWriter = new FileWriter("./resources/dynamic" + time + ".txt");
+            File file = new File("./resources/dynamic.txt");
+            FileWriter myWriter = new FileWriter("./resources/dynamic.txt", true); //true to append to file
+            myWriter.write("" + time + "\n");
             for (int i = 0; i < particles.length; i++) {				
             	try {
             		Particle particle= particles[i];
@@ -205,7 +206,6 @@ public class BrownianMotion {
             	}
 			}
             myWriter.close();
-            System.out.println("Successfully wrote to the file ./resources/dynamic" + time + ".txt");
         } catch (IOException e) {
             System.out.println("IOException ocurred");
             e.printStackTrace();
@@ -223,20 +223,13 @@ public class BrownianMotion {
 		
 		System.out.println("Steps (default 10)");
 		BufferedReader readerSteps= new BufferedReader(new InputStreamReader(System.in));
-		int stepsInput= 0;
-		try {
-			stepsInput = Integer.parseInt(readerSteps.readLine());			
-		} catch (NumberFormatException e) {
-			stepsInput= 0;
-		}
 		
 		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
-		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic0.txt" : dynamicInput;
-		int steps= (stepsInput > 0) ? stepsInput : 10;
+		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
 		
-		System.out.println("Starting with " + staticFile + ", " + dynamicFile + " and step " + steps);
+		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
 		
-		BrownianMotion brownian= new BrownianMotion(staticFile, dynamicFile, steps);
+		BrownianMotion brownian= new BrownianMotion(staticFile, dynamicFile);
 		brownian.run();
 
 	}

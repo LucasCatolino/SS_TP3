@@ -37,7 +37,7 @@ public class FilesCreator {
     	System.out.println("L: " + L + " N: " + N + " v: " + v);
     	
     	Writer writerStatic = new Writer(L, N, "static", v);
-		Writer writerDynamic = new Writer(L, N, "dynamic0", v);
+		Writer writerDynamic = new Writer(L, N, "dynamic", v);
 
     }
 

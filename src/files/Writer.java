@@ -55,6 +55,9 @@ public class Writer {
 		double limitInf= R_1;
 		double limitSup= l - R_1;
 		
+		//first line initial time
+		myWriter.write("0\n");
+		
 		//first particle centered and still
 		myWriter.write("" + l/2 + "\t" + l/2 + "\t0\t0\n");
 		
