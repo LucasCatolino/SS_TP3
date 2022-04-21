@@ -31,21 +31,22 @@ public class AnimationFilesCreator {
         }
         
         staticScanner.close();
-        
-        File file = new File("./resources/dynamic.xyz");
-        FileWriter myWriter = new FileWriter("./resources/dynamic.xyz");
+
+        File file = new File("resources/dynamic.xyz");
+        FileWriter myWriter = new FileWriter("resources/dynamic.xyz");
 		
 		InputStream dynamicStream = AnimationFilesCreator.class.getClassLoader().getResourceAsStream("dynamic.txt");
 		assert dynamicStream != null;
 		Scanner dynamicScanner = new Scanner(dynamicStream);
         int i= 0;
-        boolean reachBorder= false;
-        while (dynamicScanner.hasNext() && i < MAX && !reachBorder) {
+        while (dynamicScanner.hasNext()) {
 			try {
 
 	            myWriter.write("" + (N+4 + "\n"));
-	            myWriter.write("t=" + Double.parseDouble(dynamicScanner.next()) + "\n");
-	            
+				Double time =  Double.parseDouble(dynamicScanner.next());
+	            myWriter.write("t=" + time + "\n");
+
+
 	            int red= 1;
 	            int blue= 0;
 	            
@@ -54,8 +55,7 @@ public class AnimationFilesCreator {
         		dynamicScanner.next(); //skip vx
         		dynamicScanner.next(); //skip vy
         		myWriter.write("" + redX + "\t" + redY + "\t" + radius[0] + "\t" + red + "\t" + blue + "\n");
-        		reachBorder= evaluateBorder(redX, redY, radius[0], L);
-        		
+
         		red= 0;
         		blue= 1;	            
 	            for (int j = 1; j < N; j++) {
@@ -79,12 +79,7 @@ public class AnimationFilesCreator {
 		
 	}
 	
-	private boolean evaluateBorder(double x, double y, double r, double l) {
-		if ((x-r < 0.01) || (x+r > l-0.01) || (y-r < 00.1) || (y+r > l-0.01)) {
-			return true;
-		}
-		return false;
-	}
+
 
 	static public void main(String[] args) throws IOException {
 		System.out.println("Creating animation");
