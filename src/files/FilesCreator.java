@@ -29,15 +29,20 @@ public class FilesCreator {
     		correctN= (N > 0) ? true : false;
     	}
     	
-		System.out.println("Velocity (default 2)");
-		BufferedReader readerV= new BufferedReader(new InputStreamReader(System.in));
-		double vInput = Double.parseDouble(readerV.readLine());
-		double v= (vInput > 0) ? vInput : 2;
-
-    	System.out.println("L: " + L + " N: " + N + " v: " + v);
+		System.out.println("Min velocity (default 0)");
+		BufferedReader readerV1= new BufferedReader(new InputStreamReader(System.in));
+		double v1Input = Double.parseDouble(readerV1.readLine());
+		double v1= (v1Input > 0) ? v1Input : 2;
     	
-    	Writer writerStatic = new Writer(L, N, "static", v);
-		Writer writerDynamic = new Writer(L, N, "dynamic", v);
+		System.out.println("Max velocity (default 2)");
+		BufferedReader readerV2= new BufferedReader(new InputStreamReader(System.in));
+		double v2Input = Double.parseDouble(readerV2.readLine());
+		double v2= (v2Input > 0) ? v2Input : 2;
+
+    	System.out.println("L: " + L + " N: " + N + " min v: " + v1 + " max v: " + v2);
+    	
+    	Writer writerStatic = new Writer(L, N, "static", v1, v2);
+		Writer writerDynamic = new Writer(L, N, "dynamic", v1, v2);
 
     }
 

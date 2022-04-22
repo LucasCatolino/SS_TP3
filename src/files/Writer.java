@@ -13,12 +13,15 @@ public class Writer {
 	private static final double M_1= 0.9;
 	private static final double R_2= 0.7;
 	private static final double M_2= 2;
-	private static double velocity;
+	private static double minV;
+	private static double maxV;
 	private static final int DEGREES= 360;
+	private double[] velocities;
 		
-    public Writer(int L, int N, String type, double v) {
-    	this.velocity= v;
-    	
+    public Writer(int L, int N, String type, double v1, double v2) {
+    	this.minV= v1; //TODO: desharcodear
+    	this.maxV= v2;
+    	velocities= new double[N];
 		try {
             File file = new File("./resources/" + type + ".txt");
             FileWriter myWriter = new FileWriter("./resources/" + type + ".txt");
@@ -61,6 +64,8 @@ public class Writer {
 		//first particle centered and still
 		myWriter.write("" + l/2 + "\t" + l/2 + "\t0\t0\n");
 		
+		int i= 1;
+		velocities[0]= 0;
 		//write n particles not overlapped
 		while (particles.size() < n) {
 			double x= (Math.random() * (limitSup - limitInf) + limitInf);
@@ -86,12 +91,25 @@ public class Writer {
 			if (!particleNear) {
 				particles.add(auxPoint);
 				
-				double v= Math.random() * velocity; //module of v is 2
+				double v= Math.random() * (maxV - minV) + minV; //module of v is 2
 				double d= Math.random() * DEGREES;
 				myWriter.write("" + x + "\t" + y + "\t" + v * Math.sin(Math.toRadians(d)) + "\t"
 						+  v * Math.cos(Math.toRadians(d)) + "\n"); //x y v_x v_y not overlapped and with |v|<2
+				
+				velocities[i]= v;
+				i++;
 			}
-		}		
+		}
+		
+		printT(n);
+	}
+	
+	private void printT(int n) {
+		double auxT= M_1 * Math.pow(velocities[0], 2);
+		for (int i = 1; i < n; i++) {
+			auxT= M_2 * Math.pow(velocities[i], 2);
+		}
+		System.out.println("T: " + (auxT/n));
 	}
 
 }
