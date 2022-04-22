@@ -80,7 +80,8 @@ public class BrownianMotion {
 	}
 
 	public void run() {
-		for (int i = 1; i <= MAX; i++) {
+		int i;
+		for (i = 1; i <= MAX && evaluateBorder(); i++) {
 			//sets collision times for every pair of particles and with walls for first time
 			fillTimes();
 			
@@ -96,7 +97,10 @@ public class BrownianMotion {
 			//write output file after steps
 			writeOutput();
 		}
-        System.out.println("Successfully wrote to the file ./resources/dynamic.txt");
+        System.out.println("Successfully wrote to the file ./resources/dynamic.txt\n" +
+				"Time: " + time  + "\n" +
+				"Number of collisions: " + i +
+				"\nAvg time between collisions: " + time/i);
 	}
 
 
@@ -197,8 +201,8 @@ public class BrownianMotion {
 
 	private void writeOutput() {
 		try {
-            File file = new File("./resources/dynamic.txt");
-            FileWriter myWriter = new FileWriter("./resources/dynamic.txt", true); //true to append to file
+            File file = new File("resources/dynamic.txt");
+            FileWriter myWriter = new FileWriter("resources/dynamic.txt", true); //true to append to file
             myWriter.write("" + time + "\n");
             for (int i = 0; i < particles.length; i++) {				
             	try {
@@ -213,6 +217,15 @@ public class BrownianMotion {
             System.out.println("IOException ocurred");
             e.printStackTrace();
         }
+	}
+
+	private boolean evaluateBorder() {
+		double r = particles[0].getR();
+		double l = L;
+		double x= particles[0].getX();
+		double y = particles[0].getY();
+
+		return !((x - r < 0.01) || (x + r > l - 0.01) || (y - r < 00.1) || (y + r > l - 0.01));
 	}
 
 	static public void main(String[] args) throws IOException {
