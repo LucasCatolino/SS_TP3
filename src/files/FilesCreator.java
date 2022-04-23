@@ -32,12 +32,12 @@ public class FilesCreator {
 		System.out.println("Min velocity (default 0)");
 		BufferedReader readerV1= new BufferedReader(new InputStreamReader(System.in));
 		double v1Input = Double.parseDouble(readerV1.readLine());
-		double v1= (v1Input > 0) ? v1Input : 2;
+		double v1= (v1Input > 0) ? v1Input : 0;
     	
 		System.out.println("Max velocity (default 2)");
 		BufferedReader readerV2= new BufferedReader(new InputStreamReader(System.in));
 		double v2Input = Double.parseDouble(readerV2.readLine());
-		double v2= (v2Input > 0) ? v2Input : 2;
+		double v2= (v2Input > v1) ? v2Input : 2;
 
     	System.out.println("L: " + L + " N: " + N + " min v: " + v1 + " max v: " + v2);
     	
